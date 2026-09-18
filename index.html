@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Engine | Internship Recommendations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #F4F3EF; color: #111111; }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.6s ease-out forwards; }
+        @keyframes searchPan {
+           0% { transform: translate(-20px, -10px) rotate(-20deg); }
+           50% { transform: translate(15px, 20px) rotate(20deg); }
+           100% { transform: translate(-20px, -10px) rotate(-20deg); }
+        }
+        .animate-search { 
+            display: block; 
+            animation: searchPan 2s infinite ease-in-out; 
+        }
+        select:focus, input:focus { outline: none; border-color: #111; box-shadow: none; }
+    </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-black selection:text-white">
+
+    <nav class="border-b border-black/10">
+        <div class="max-w-[90rem] mx-auto px-6 py-6 flex justify-between items-center">
+            <div class="font-bold text-2xl tracking-tighter uppercase flex items-center">
+                Data Alcott Systems <span class="text-black text-3xl leading-none">.</span>
+            </div>
+            <div class="hidden md:flex space-x-12 text-[11px] font-bold tracking-widest uppercase">
+                <span id="navEngine" class="cursor-pointer border-b border-black pb-1 text-black transition-colors">Engine</span>
+                <span id="navDocs" class="cursor-pointer text-gray-500 hover:text-black transition-colors pb-1">Documentation</span>
+                <span id="navInsight" class="cursor-pointer text-gray-500 hover:text-black transition-colors pb-1">Insight</span>
+            </div>
+            <button id="navDashboard" class="bg-black text-white text-[11px] font-bold uppercase tracking-widest px-6 py-3 flex items-center hover:bg-gray-800 transition-colors">
+                Dashboard <span class="ml-3 font-normal text-sm">↗</span>
+            </button>
+        </div>
+    </nav>
+
+    <header id="particles-js" class="relative overflow-hidden max-w-[90rem] mx-auto px-6 pt-16 pb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+        <div class="relative z-10">
+            <p class="text-[11px] font-bold tracking-widest uppercase text-gray-500 mb-4 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#c2a3ff]"></span> AI-Powered Solution
+            </p>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.9]">
+                Internship<br>Recommendation<br>Engine
+            </h1>
+            <p class="mt-6 text-gray-600 max-w-md text-sm leading-relaxed border-l border-black/20 pl-4">
+                A tri-engine recommendation system utilizing TF-IDF, Collaborative Filtering, and PyTorch Deep Learning to match profiles with industry demands.
+            </p>
+        </div>
+    </header>
+
+    <!-- DATA CONSENT & TIMELINE LOGGING -->
+    <div class="max-w-[90rem] mx-auto px-6 mb-12">
+        <div class="p-5 border border-black/10 bg-white w-full">
+            <label class="flex items-start md:items-center gap-4 cursor-pointer group w-full">
+                <input type="checkbox" id="userConsent" class="w-4 h-4 text-black border-black/20 focus:ring-black cursor-pointer flex-shrink-0 mt-0.5 md:mt-0">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-[#111] group-hover:text-gray-600 transition-colors leading-relaxed">
+                    Willing to share user data? (Logs activity to timeline)
+                </span>
+            </label>
+                        
+            <!-- Hidden credentials section -->
+            <div id="academicCredentials" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-5 pt-5 border-t border-black/10">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Student ID</label>
+                    <input type="text" id="studentId" placeholder="e.g. S-1024" class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm focus:border-black">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Registration No.</label>
+                    <input type="text" id="regNumber" placeholder="e.g. REG-2026" class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm focus:border-black">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="border-b border-black/10 mb-12"></div>
+
+    <main id="appSection" class="max-w-[90rem] mx-auto px-6 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-16 animate-fade-up">
+        
+        <aside class="lg:col-span-4 h-fit">
+            <h2 class="text-[11px] font-bold tracking-widest uppercase mb-8 border-b border-black/10 pb-4">
+                // Set Up Profile
+            </h2>
+            
+            <form id="studentProfileForm" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Full Name</label>
+                    <input type="text" id="userName" required placeholder="e.g. Adhyayan Kala" 
+                           class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Current Degree / Major</label>
+                    <select id="userDegree" required class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black appearance-none">
+                        <option value="" disabled selected>Select your degree...</option>
+                        <option value="B.E. Cloud Computing">B.E. Cloud Computing</option>
+                        <option value="B.E. Information Technology">B.E. Information Technology</option>
+                        <option value="B.Sc / M.Sc Data Science">B.Sc / M.Sc Data Science</option>
+                        <option value="B.Sc Information Security">B.Sc Information Security</option>
+                        <option value="B.Sc Statistics / Math">B.Sc Statistics / Math</option>
+                        <option value="B.Tech Computer Science">B.Tech Computer Science</option>
+                        <option value="B.Tech CS / IT">B.Tech CS / IT</option>
+                        <option value="B.Tech CS / M.Tech">B.Tech CS / M.Tech</option>
+                        <option value="B.Tech Cybersecurity">B.Tech Cybersecurity</option>
+                        <option value="BCA / MCA">BCA / MCA</option>
+                        <option value="M.Sc Cyber Forensics">M.Sc Cyber Forensics</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Top Technical Skills</label>
+                    <div class="space-y-3">
+                        <select id="skill1" class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black appearance-none">
+                            <option value="" disabled selected>Select Skill 1...</option><option value="None">None</option><option value="AWS">AWS</option><option value="Azure">Azure</option><option value="Bash">Bash</option><option value="C++">C++</option><option value="Computer Vision">Computer Vision</option><option value="Cybersecurity">Cybersecurity</option><option value="Data Analysis">Data Analysis</option><option value="Deep Learning">Deep Learning</option><option value="DevOps">DevOps</option><option value="Digital Forensics">Digital Forensics</option><option value="Docker">Docker</option><option value="Ethical Hacking">Ethical Hacking</option><option value="GCP">GCP</option><option value="Incident Response">Incident Response</option><option value="Java">Java</option><option value="JavaScript">JavaScript</option><option value="Kubernetes">Kubernetes</option><option value="Librosa">Librosa</option><option value="Linux">Linux</option><option value="Machine Learning">Machine Learning</option><option value="Mobile Forensics">Mobile Forensics</option><option value="NLP">NLP</option><option value="Network Security">Network Security</option><option value="NoSQL">NoSQL</option><option value="Node.js">Node.js</option><option value="OpenCV">OpenCV</option><option value="Pandas">Pandas</option><option value="PowerBI">PowerBI</option><option value="PyTorch">PyTorch</option><option value="Python">Python</option><option value="React">React</option><option value="SQL">SQL</option><option value="Scikit-learn">Scikit-learn</option><option value="TensorFlow">TensorFlow</option>
+                        </select>
+                        <select id="skill2" class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black appearance-none">
+                            <option value="" disabled selected>Select Skill 2...</option><option value="None">None</option><option value="AWS">AWS</option><option value="Azure">Azure</option><option value="Bash">Bash</option><option value="C++">C++</option><option value="Computer Vision">Computer Vision</option><option value="Cybersecurity">Cybersecurity</option><option value="Data Analysis">Data Analysis</option><option value="Deep Learning">Deep Learning</option><option value="DevOps">DevOps</option><option value="Digital Forensics">Digital Forensics</option><option value="Docker">Docker</option><option value="Ethical Hacking">Ethical Hacking</option><option value="GCP">GCP</option><option value="Incident Response">Incident Response</option><option value="Java">Java</option><option value="JavaScript">JavaScript</option><option value="Kubernetes">Kubernetes</option><option value="Librosa">Librosa</option><option value="Linux">Linux</option><option value="Machine Learning">Machine Learning</option><option value="Mobile Forensics">Mobile Forensics</option><option value="NLP">NLP</option><option value="Network Security">Network Security</option><option value="NoSQL">NoSQL</option><option value="Node.js">Node.js</option><option value="OpenCV">OpenCV</option><option value="Pandas">Pandas</option><option value="PowerBI">PowerBI</option><option value="PyTorch">PyTorch</option><option value="Python">Python</option><option value="React">React</option><option value="SQL">SQL</option><option value="Scikit-learn">Scikit-learn</option><option value="TensorFlow">TensorFlow</option>
+                        </select>
+                        <select id="skill3" class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black appearance-none">
+                            <option value="" disabled selected>Select Skill 3...</option><option value="None">None</option><option value="AWS">AWS</option><option value="Azure">Azure</option><option value="Bash">Bash</option><option value="C++">C++</option><option value="Computer Vision">Computer Vision</option><option value="Cybersecurity">Cybersecurity</option><option value="Data Analysis">Data Analysis</option><option value="Deep Learning">Deep Learning</option><option value="DevOps">DevOps</option><option value="Digital Forensics">Digital Forensics</option><option value="Docker">Docker</option><option value="Ethical Hacking">Ethical Hacking</option><option value="GCP">GCP</option><option value="Incident Response">Incident Response</option><option value="Java">Java</option><option value="JavaScript">JavaScript</option><option value="Kubernetes">Kubernetes</option><option value="Librosa">Librosa</option><option value="Linux">Linux</option><option value="Machine Learning">Machine Learning</option><option value="Mobile Forensics">Mobile Forensics</option><option value="NLP">NLP</option><option value="Network Security">Network Security</option><option value="NoSQL">NoSQL</option><option value="Node.js">Node.js</option><option value="OpenCV">OpenCV</option><option value="Pandas">Pandas</option><option value="PowerBI">PowerBI</option><option value="PyTorch">PyTorch</option><option value="Python">Python</option><option value="React">React</option><option value="SQL">SQL</option><option value="Scikit-learn">Scikit-learn</option><option value="TensorFlow">TensorFlow</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Career Interests</label>
+                    <input type="text" id="userInterests" required placeholder="e.g. Audio Deepfake Detection, AI" 
+                           class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Location</label>
+                        <select id="userLocation" required class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black appearance-none">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Any">Any Location</option>
+                            <option value="Remote">Remote</option>
+                            <option value="Ahmedabad">Ahmedabad</option><option value="Bangalore">Bangalore</option><option value="Bhubaneswar">Bhubaneswar</option><option value="Chandigarh">Chandigarh</option><option value="Chennai">Chennai</option><option value="Coimbatore">Coimbatore</option><option value="Delhi">Delhi</option><option value="Gurgaon">Gurgaon</option><option value="Hyderabad">Hyderabad</option><option value="Indore">Indore</option><option value="Jaipur">Jaipur</option><option value="Kochi">Kochi</option><option value="Kolkata">Kolkata</option><option value="London">London</option><option value="Lucknow">Lucknow</option><option value="Mumbai">Mumbai</option><option value="Noida">Noida</option><option value="Pune">Pune</option><option value="San Francisco">San Francisco</option><option value="Seattle">Seattle</option><option value="Singapore">Singapore</option><option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">CGPA</label>
+                        <input type="number" id="userCGPA" step="0.1" min="0" max="10" required placeholder="e.g. 8.5" 
+                               class="w-full border border-black/20 bg-transparent rounded-none p-3 text-sm transition-colors focus:border-black">
+                    </div>
+                </div>
+
+                <button type="submit" class="mt-8 w-full bg-[#111] text-white text-[11px] font-bold uppercase tracking-widest py-4 px-6 hover:bg-gray-800 transition-colors flex justify-between items-center">
+                    Find Internships <span class="text-sm font-normal">↗</span>
+                </button>
+            </form>
+        </aside>
+        
+        <section id="resultsSection" class="lg:col-span-8 space-y-16">
+            <div id="recommendationsContainer" class="space-y-4">
+                <div class="flex flex-col items-center justify-center py-24 text-center border border-black/10">
+                    <p class="text-[11px] font-bold tracking-widest uppercase text-gray-500 mb-2">// Your skills, your goals, your match: internships curated just for you</p>
+                    <p class="text-xl font-bold tracking-tight text-gray-400">Fill your Profile to do the Perfect Match!!!<br> No Sign Up || No Registration</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <main id="docsSection" class="hidden max-w-[90rem] mx-auto px-6 pb-24 animate-fade-up">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <aside class="lg:col-span-3 h-fit sticky top-8">
+                <h2 class="text-[11px] font-bold tracking-widest uppercase mb-8 border-b border-black/10 pb-4">
+                    // Index
+                </h2>
+                <ul id="docSidebar" class="space-y-5 text-[11px] font-bold uppercase tracking-widest text-gray-500">
+                    <li><a href="#doc-how-to" class="doc-link block cursor-pointer transition-colors pl-4 border-l-2 border-black text-black">1. How to use the engine</a></li>
+                    <li><a href="#doc-algorithms" class="doc-link block cursor-pointer hover:text-black transition-colors pl-4 border-l-2 border-transparent">2. Core Algorithms</a></li>
+                    <li><a href="#doc-logic" class="doc-link block cursor-pointer hover:text-black transition-colors pl-4 border-l-2 border-transparent">3. Match Score Logic</a></li>
+                    <li><a href="#doc-viz" class="doc-link block cursor-pointer hover:text-black transition-colors pl-4 border-l-2 border-transparent">4. Visualization Data</a></li>
+                </ul>
+            </aside>
+
+            <section class="lg:col-span-9 space-y-24 text-[#111]">
+                <div id="doc-how-to" class="scroll-mt-12">
+                    <h3 class="text-3xl font-black tracking-tighter uppercase mb-6">1. How To Use The Engine</h3>
+                    <p class="text-sm leading-relaxed text-gray-600 mb-8 max-w-3xl">
+                        The AI Internship Recommendation Engine is designed to bridge the gap between academic profiling and industry demands. Follow these steps to generate accurate internship matches:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="border border-black/10 p-6 bg-white hover:border-black/30 transition-colors">
+                            <span class="block text-3xl font-black mb-4">01</span>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest mb-3 border-b border-black/10 pb-2">Input Variables</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Ensure you select a minimum of one technical skill. The system uses a strict threshold; empty skill sets will trigger an execution failure to prevent false positives.</p>
+                        </div>
+                        <div class="border border-black/10 p-6 bg-white hover:border-black/30 transition-colors">
+                            <span class="block text-3xl font-black mb-4">02</span>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest mb-3 border-b border-black/10 pb-2">Define Constraints</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Your CGPA acts as a hard filter. Internships demanding a higher minimum threshold than your profile will be automatically pruned from the final matrix.</p>
+                        </div>
+                        <div class="border border-black/10 p-6 bg-white hover:border-black/30 transition-colors">
+                            <span class="block text-3xl font-black mb-4">03</span>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest mb-3 border-b border-black/10 pb-2">Execute Analysis</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">Click "Run Analysis" to fire the independent sub-engines. Results are segmented into Consensus, Content, Hybrid, and Deep Learning matches.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="doc-algorithms" class="border-t border-black/10 pt-16 scroll-mt-12">
+                    <h3 class="text-3xl font-black tracking-tighter uppercase mb-8">2. Core Algorithms & Architecture</h3>
+                    <div class="space-y-12">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                            <h4 class="text-sm font-bold tracking-widest uppercase md:col-span-1">A. TF-IDF Vectors <br><span class="text-[9px] text-gray-400 block mt-1">(Content Engine)</span></h4>
+                            <p class="text-sm leading-relaxed text-gray-600 md:col-span-2 border-l border-black/20 pl-6">
+                                The strictest form of matching. This engine converts both your profile and the internship requirements into numerical vectors using Term Frequency-Inverse Document Frequency (TF-IDF). It then calculates the <strong>Cosine Similarity</strong> between them. If your skills do not directly align with the text of the required skills, your score here will be low.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                            <h4 class="text-sm font-bold tracking-widest uppercase md:col-span-1">B. Collaborative<br><span class="text-[9px] text-gray-400 block mt-1">(Hybrid Engine)</span></h4>
+                            <p class="text-sm leading-relaxed text-gray-600 md:col-span-2 border-l border-black/20 pl-6">
+                                A statistical approach that looks beyond raw skills. It weights your Content Match at <strong>70%</strong> and combines it with a <strong>30%</strong> Peer Popularity Score derived from historical user interactions. This recommends internships that are highly rated by students with similar profiles.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                            <h4 class="text-sm font-bold tracking-widest uppercase md:col-span-1">C. Neural Networks<br><span class="text-[9px] text-gray-400 block mt-1">(Deep Learning)</span></h4>
+                            <p class="text-sm leading-relaxed text-gray-600 md:col-span-2 border-l border-black/20 pl-6">
+                                Powered by PyTorch. We utilize a Multi-Layer Perceptron (MLP) with company embeddings. The network analyzes non-linear hidden patterns in the dataset (using ReLU activation functions) to predict your match probability. This score is hybridized (70% Content / 30% Neural Prediction).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="doc-logic" class="border-t border-black/10 pt-16 scroll-mt-12">
+                    <h3 class="text-3xl font-black tracking-tighter uppercase mb-6">3. Match Score Clarifications</h3>
+                    <ul class="space-y-6 text-sm leading-relaxed text-gray-600 max-w-4xl">
+                        <li class="flex items-start gap-4">
+                            <span class="text-black font-black text-lg leading-none">↗</span> 
+                            <span><strong>Location Overrides:</strong> If you select a specific city (e.g., "Ahmedabad"), the engine executes a hard prioritization override. Internships in that city are forced to the top of the feed, even if they have a lower skill match rate.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-black font-black text-lg leading-none">↗</span> 
+                            <span><strong>Zero-Score Skills:</strong> If you select "None" for a skill, the engine automatically assigns a mathematical weight of 0 for that slot in the Spider Graph rendering process to prevent data skewing.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-black font-black text-lg leading-none">↗</span> 
+                            <span><strong>Sub-String Matching:</strong> In the visualization layer, partial skill matches (e.g., user inputs "Cybersecurity", company requests "Information Security") are awarded a 60% partial relevance score based on domain heuristics.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="doc-viz" class="border-t border-black/10 pt-16 scroll-mt-12">
+                    <h3 class="text-3xl font-black tracking-tighter uppercase mb-6">4. Visualization Data</h3>
+                    <p class="text-sm leading-relaxed text-gray-600 mb-10 max-w-3xl">
+                        The engine utilizes a multi-axis Radar Chart (Spider Graph) to visually map the intersection of user competencies against market demands. Below is the functional breakdown of the visualization UI.
+                    </p>
+                    
+                    <div class="border border-black/20 p-8 md:p-12 bg-white relative">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                            <div class="flex flex-col space-y-10">
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-16 h-16 rounded-full border border-black flex items-center justify-center font-bold text-xs bg-[#F4F3EF] group-hover:bg-black group-hover:text-white transition-colors">NODE</div>
+                                    <span class="text-2xl text-black">→</span>
+                                    <div class="flex-1">
+                                        <h5 class="text-[10px] font-bold uppercase tracking-widest text-black mb-1">Outer Vertices</h5>
+                                        <p class="text-xs text-gray-500">Each outer point on the polygon represents one of the top 5 matched companies.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-16 h-16 border border-black rounded-full flex items-center justify-center relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-black/10 origin-bottom scale-y-[0.6]"></div>
+                                        <span class="relative z-10 font-bold text-xs uppercase">FILL</span>
+                                    </div>
+                                    <span class="text-2xl text-black">→</span>
+                                    <div class="flex-1">
+                                        <h5 class="text-[10px] font-bold uppercase tracking-widest text-black mb-1">Radial Distance</h5>
+                                        <p class="text-xs text-gray-500">The spread from center (0%) to edge (100%) plots the mathematical confidence score.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6 group">
+                                    <div class="w-16 h-8 bg-black text-white flex items-center justify-center font-bold text-[9px] uppercase tracking-widest rounded-sm">HOVER</div>
+                                    <span class="text-2xl text-black">→</span>
+                                    <div class="flex-1">
+                                        <h5 class="text-[10px] font-bold uppercase tracking-widest text-black mb-1">Interactive Overlay</h5>
+                                        <p class="text-xs text-gray-500">Triggers on cursor hover to reveal the exact technology stack demanded by that node.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t md:border-t-0 md:border-l border-black/10 pt-8 md:pt-0 md:pl-12">
+                                <h4 class="text-[11px] font-bold uppercase tracking-widest mb-6 border-b border-black/10 pb-2">// Graph Anatomy</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed mb-6">
+                                    The visualizations are rendered dynamically using Chart.js on HTML5 Canvas. The charts employ a radial gradient to maintain the brutalist aesthetic while offering rapid comparative analysis.
+                                </p>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    <strong>Why Radar Charts?</strong><br>
+                                    They allow users to instantly spot symmetry. A perfectly filled polygon indicates a universal fit across all top companies, while a skewed shape reveals skill gaps in specific industry sectors.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+    <main id="insightSection" class="hidden max-w-[90rem] mx-auto px-6 pb-24 animate-fade-up">
+        <!-- Catchy Header -->
+        <div class="border-b border-black/10 pb-6 mb-10">
+            <h2 class="text-[11px] font-bold tracking-widest uppercase text-gray-500 mb-2">// Syncing ambition with opportunity in real-time</h2>
+            <h3 class="text-4xl font-black tracking-tighter uppercase text-[#111]">What Are You Waiting For?</h3>
+            <p class="text-sm text-gray-600 mt-4 max-w-3xl leading-relaxed">
+                More than 3000 students find and select their match. Even more than 20000 live matches are still going.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <!-- Left Panel: Live Feed -->
+            <div class="lg:col-span-5 flex flex-col h-[600px] border border-black/10 bg-[#F4F3EF]">
+                <div class="bg-[#111] text-white p-5 text-[10px] font-bold uppercase tracking-widest flex flex-col gap-4 shadow-md z-10">
+                    <div class="flex items-center justify-between">
+                        <span>Recent Student Activity</span>
+                        <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> SYNCING</span>
+                    </div>
+                    <!-- Real-time Search Bar -->
+                    <input type="text" id="insightSearch" placeholder="SEARCH BY STUDENT NAME..." 
+                           class="w-full bg-transparent border border-white/30 p-2 text-white placeholder-gray-500 focus:border-white focus:outline-none transition-colors text-[10px] tracking-widest">
+                </div>
+                <div class="overflow-y-auto flex-1 p-2">
+                    <ul id="insightFeedContainer" class="space-y-2">
+                        <!-- Feed Items Injected Here -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Panel: Graph & Details -->
+            <div class="lg:col-span-7 flex flex-col space-y-6">
+                <!-- Selected Detail Card -->
+                <div id="insightDetailCard" class="border border-black/10 bg-white p-8 opacity-0 transition-opacity duration-500">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">// TARGET ACQUISITION</h4>
+                    <h3 id="detailCompany" class="text-3xl font-black uppercase text-[#111] mb-6">Select a profile...</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm border-t border-black/10 pt-4">
+                        <div><span class="text-gray-400 text-[9px] uppercase tracking-widest block mb-1">Candidate</span><strong id="detailName" class="text-[#111]">--</strong></div>
+                        <div><span class="text-gray-400 text-[9px] uppercase tracking-widest block mb-1">Academic ID</span><strong id="detailId" class="text-[#111]">--</strong></div>
+                        <div><span class="text-gray-400 text-[9px] uppercase tracking-widest block mb-1">Reg No.</span><strong id="detailReg" class="text-[#111]">--</strong></div>
+                        <div><span class="text-gray-400 text-[9px] uppercase tracking-widest block mb-1">Timestamp</span><strong id="detailTime" class="text-[#111]">--</strong></div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Graph -->
+                <div class="border border-black/10 bg-white p-8 h-[380px] flex flex-col relative">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500">// ENROLLMENT VELOCITY GRAPH</h4>
+                        <span id="graphScope" class="text-[9px] font-bold bg-[#111] text-white px-3 py-1 uppercase tracking-widest">Aggregate View</span>
+                    </div>
+                    <div class="flex-1 w-full relative">
+                        <canvas id="insightAnalyticsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <main id="dashboardSection" class="hidden max-w-[90rem] mx-auto px-6 pb-24 animate-fade-up">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-black/10 pb-6 mb-10">
+            <div>
+                <h2 class="text-[11px] font-bold tracking-widest uppercase text-gray-500 mb-2">// 1400+ COMPANIES TO MATCH</h2>
+                <h3 class="text-4xl font-black tracking-tighter uppercase text-[#111]">Company Ratings</h3>
+            </div>
+            
+            <div class="mt-6 md:mt-0 w-full md:w-72">
+                <input type="text" id="dashboardSearch" placeholder="Search for a company..." 
+                       class="w-full border border-black/20 bg-white p-3 text-sm transition-colors focus:border-black placeholder-gray-400">
+            </div>
+        </div>
+
+        <div class="overflow-x-auto border border-black/10 bg-[#F4F3EF]">
+            <table class="w-full text-left text-sm whitespace-nowrap">
+                <thead class="bg-[#111] text-white">
+                    <tr>
+                        <th class="p-5 font-bold tracking-widest uppercase text-[10px]">Company Name</th>
+                        <th class="p-5 font-bold tracking-widest uppercase text-[10px]">Overall Rating</th>
+                        <th class="p-5 font-bold tracking-widest uppercase text-[10px]">Work-Life</th>
+                        <th class="p-5 font-bold tracking-widest uppercase text-[10px]">Mentorship</th>
+                        <th class="p-5 font-bold tracking-widest uppercase text-[10px]">Learning</th>
+                        <th class="p-5 font-bold tracking-widest uppercase text-[10px]">Total Reviews</th>
+                    </tr>
+                </thead>
+                <tbody id="dashboardTableBody" class="text-gray-700 bg-white">
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- LIVE REVIEW POPUP NOTIFICATION -->
+    <div id="reviewPopup" class="fixed bottom-8 right-8 z-50 bg-[#111] border border-gray-700 p-5 w-80 shadow-2xl transform transition-all duration-700 translate-y-32 opacity-0 pointer-events-none">
+        <div class="flex items-center gap-3 mb-3 border-b border-white/20 pb-2">
+            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-gray-400">// LIVE FEEDBACK</span>
+        </div>
+        <p id="reviewText" class="text-sm text-gray-200 leading-relaxed italic">"Loading review..."</p>
+        <p id="reviewAuthor" class="text-[10px] font-bold tracking-widest uppercase text-white mt-4 text-right"></p>
+    </div>
+
+    <footer class="bg-[#111] text-white py-16">
+        <div class="max-w-[90rem] mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-6">// ABOUT ENGINE</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                    Designed and architected to bridge the gap between academic profiling and industry demands through multi-layered machine learning algorithms.<br>Developer-AD<br>DATA ALCOTT SYSTEMS<br>
+                    www.freeinternships.in<br>
+                    9600095045<br>
+                    mail@freeinternships.in
+                </p>
+            </div>
+            <div>
+                <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-6">// TECHNOLOGIES</h4>
+                <ul class="text-sm text-gray-300 space-y-3">
+                    <li class="flex justify-between border-b border-white/10 pb-2"><span>PyTorch Networks</span> <span>95%</span></li>
+                    <li class="flex justify-between border-b border-white/10 pb-2"><span>TF-IDF Vectors</span> <span>90%</span></li>
+                    <li class="flex justify-between border-b border-white/10 pb-2"><span>Flask API</span> <span>100%</span></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-6">// DEPLOYMENT</h4>
+                <p class="text-sm text-gray-300 leading-relaxed mb-4">Ready for production via Gunicorn and Render cloud infrastructure.</p>
+                <a href="#" class="text-[11px] font-bold uppercase tracking-widest hover:text-gray-400 transition-colors">Go Top ↗</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let telemetryChartInstance = null;
+        const skill1 = document.getElementById('skill1');
+        const skill2 = document.getElementById('skill2');
+        const skill3 = document.getElementById('skill3');
+
+        function preventDuplicateSkills() {
+            const selectedSkills = [skill1.value, skill2.value, skill3.value];
+            [skill1, skill2, skill3].forEach((dropdown, index) => {
+                Array.from(dropdown.options).forEach(option => {
+                    if (option.value === "" || option.value === "None") {
+                        option.disabled = false;
+                        option.style.color = ''; 
+                        return;
+                    }
+                    const isSelectedElsewhere = selectedSkills.some((val, i) => val === option.value && i !== index);
+                    if (isSelectedElsewhere) {
+                        option.disabled = true;
+                        option.style.color = '#9ca3af';
+                    } else {
+                        option.disabled = false;
+                        option.style.color = '';
+                    }
+                });
+            });
+        }
+
+        skill1.addEventListener('change', preventDuplicateSkills);
+        skill2.addEventListener('change', preventDuplicateSkills);
+        skill3.addEventListener('change', preventDuplicateSkills); 
+
+        const navEngine = document.getElementById('navEngine');
+        const navDocs = document.getElementById('navDocs');
+        const appSection = document.getElementById('appSection');
+        const docsSection = document.getElementById('docsSection');
+        const navDashboard = document.getElementById('navDashboard');
+        const dashboardSection = document.getElementById('dashboardSection');
+        const docLinks = document.querySelectorAll('.doc-link');
+
+        docLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                docLinks.forEach(l => {
+                    l.classList.remove('border-black', 'text-black');
+                    l.classList.add('border-transparent');
+                });
+                this.classList.remove('border-transparent');
+                this.classList.add('border-black', 'text-black');
+            });
+        });
+
+        navEngine.addEventListener('click', () => {
+            appSection.classList.remove('hidden');
+            docsSection.classList.add('hidden');
+            dashboardSection.classList.add('hidden');
+            navEngine.classList.add('text-black', 'border-b', 'border-black');
+            navEngine.classList.remove('text-gray-500');
+            navDocs.classList.add('text-gray-500');
+            navDocs.classList.remove('text-black', 'border-b', 'border-black');
+            setTimeout(() => {
+                const gap = 35; 
+                const y = appSection.getBoundingClientRect().top + window.scrollY - gap;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 60);
+        });
+
+        navDocs.addEventListener('click', () => {
+            docsSection.classList.remove('hidden');
+            appSection.classList.add('hidden');
+            dashboardSection.classList.add('hidden');
+            navDocs.classList.add('text-black', 'border-b', 'border-black');
+            navDocs.classList.remove('text-gray-500');
+            navEngine.classList.add('text-gray-500');
+            navEngine.classList.remove('text-black', 'border-b', 'border-black');
+            setTimeout(() => {
+                const gap = 80; 
+                const y = docsSection.getBoundingClientRect().top + window.scrollY - gap;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 60);
+        });
+        
+        navDashboard.addEventListener('click', () => {
+            appSection.classList.add('hidden');
+            docsSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            
+            navEngine.classList.add('text-gray-500');
+            navEngine.classList.remove('text-black', 'border-b', 'border-black');
+            navDocs.classList.add('text-gray-500');
+            navDocs.classList.remove('text-black', 'border-b', 'border-black');
+            
+            setTimeout(() => {
+                const gap = 80; 
+                const y = dashboardSection.getBoundingClientRect().top + window.scrollY - gap;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 60);
+
+            loadDashboardData();
+        });
+   
+        navInsight.addEventListener('click', () => {
+            appSection.classList.add('hidden');
+            docsSection.classList.add('hidden');
+            dashboardSection.classList.add('hidden');
+            insightSection.classList.remove('hidden'); // SHOWS THE PAGE
+
+            navInsight.classList.add('text-black', 'border-b', 'border-black');
+            navInsight.classList.remove('text-gray-500');
+
+            [navEngine, navDocs, navDashboard].forEach(nav => {
+                nav.classList.add('text-gray-500');
+                nav.classList.remove('text-black', 'border-b', 'border-black');
+            });
+
+            setTimeout(() => {
+                const y = insightSection.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, 60);
+
+            loadTelemetryData(''); // LOADS THE DATA
+        });
+
+        let isDashboardLoaded = false;
+        function parseCSVRow(str) {
+            let result = [], insideQuote = false, currentPart = "";
+            for (let i = 0; i < str.length; i++) {
+                const char = str[i];
+                if (char === '"') insideQuote = !insideQuote;
+                else if (char === ',' && !insideQuote) { result.push(currentPart.trim()); currentPart = ""; }
+                else currentPart += char;
+            }
+            result.push(currentPart.trim());
+            return result;
+        }
+
+        async function loadDashboardData() {
+            if (isDashboardLoaded) return;
+            const tbody = document.getElementById('dashboardTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="p-12 text-center text-[11px] font-bold tracking-widest uppercase text-gray-500 animate-pulse">Loading Database Insights...</td></tr>';
+            
+            try {
+                const response = await fetch('/static/company_ratings_2.csv');
+                if (!response.ok) throw new Error("CSV not found.");
+                const text = await response.text();
+                const rows = text.trim().split('\n').slice(1);
+                tbody.innerHTML = ''; 
+                
+                rows.forEach(row => {
+                    const cols = parseCSVRow(row);
+                    if (cols.length < 6) return;
+                    
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-black/5 hover:bg-[#F4F3EF] transition-colors';
+                    tr.innerHTML = `
+                        <td class="p-5 font-bold text-[#111] uppercase tracking-tighter text-sm">${cols[0]}</td>
+                        <td class="p-5"><span class="bg-[#111] text-white px-3 py-1.5 text-[10px] font-bold tracking-widest">${parseFloat(cols[1]).toFixed(1)} ★</span></td>
+                        <td class="p-5 text-sm font-semibold text-gray-500">${parseFloat(cols[2]).toFixed(1)}</td>
+                        <td class="p-5 text-sm font-semibold text-gray-500">${parseFloat(cols[3]).toFixed(1)}</td>
+                        <td class="p-5 text-sm font-semibold text-gray-500">${parseFloat(cols[4]).toFixed(1)}</td>
+                        <td class="p-5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">${cols[5]} Reviews</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                isDashboardLoaded = true;
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-[11px] font-bold tracking-widest uppercase text-red-500">Error: Could not load /static/company_ratings_2.csv</td></tr>`;
+                console.error(error);
+            }
+        }
+
+        document.getElementById('dashboardSearch').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#dashboardTableBody tr');
+            rows.forEach(row => {
+                let companyName = row.cells[0].textContent.toLowerCase();
+                row.style.display = companyName.includes(filter) ? '' : 'none';
+            });
+        });
+
+        // --- ASYNC COMPANY SELECTION & TIMELINE LOGGING ---
+        window.selectAndLogCompany = async function(companyName, btnElement) {
+            const consentGiven = document.getElementById('userConsent').checked;
+            
+            if (!consentGiven) {
+                alert("Please check the consent box to record and share your user data.");
+                return;
+            }
+
+            const payload = {
+                name: document.getElementById('userName').value || 'Anonymous',
+                student_id: document.getElementById('studentId').value,
+                registration_no: document.getElementById('regNumber').value,
+                company: companyName,
+                consent_given: true
+            };
+
+            const originalText = btnElement.innerHTML;
+            btnElement.innerHTML = "Logging...";
+            btnElement.disabled = true;
+
+            try {
+                const response = await fetch('/log-company-interaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    btnElement.innerHTML = "Thank you for your response and feedback ✓";
+                    btnElement.classList.remove('bg-[#111]', 'hover:bg-gray-800');
+                    btnElement.classList.add('bg-green-600', 'text-white', 'cursor-default');
+                } else {
+                    btnElement.innerHTML = originalText;
+                    btnElement.disabled = false;
+                    alert(result.message || "Could not log interaction.");
+                }
+            } catch (error) {
+                console.error("Error logging company selection:", error);
+                btnElement.innerHTML = originalText;
+                btnElement.disabled = false;
+            }
+        };
+
+        window.runEngine = async function(interestedCompany = null) {
+            const runId = Date.now();
+            const rawSkills = [
+                document.getElementById('skill1').value,
+                document.getElementById('skill2').value,
+                document.getElementById('skill3').value
+            ];
+            const validSkills = rawSkills.filter(skill => skill !== 'None' && skill !== '' && skill !== null);
+            const container = document.getElementById('recommendationsContainer');
+
+            if (validSkills.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-16 text-center border border-black bg-white">
+                        <p class="text-[11px] tracking-widest font-bold uppercase text-black mb-2">// SORRY</p>
+                        <p class="text-lg font-bold">Requirements not met. Please select at least 1 technical skill.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const profileData = {
+                name: document.getElementById('userName').value,
+                degree: document.getElementById('userDegree').value,
+                skills: validSkills,
+                interests: document.getElementById('userInterests').value,
+                location: document.getElementById('userLocation').value,
+                cgpa: document.getElementById('userCGPA').value,
+                interested_company: interestedCompany,
+                consent_given: document.getElementById('userConsent').checked,
+                student_id: document.getElementById('studentId').value,
+                registration_no: document.getElementById('regNumber').value 
+            };
+            
+            const statusText = interestedCompany ? `// RECALCULATING WEIGHTS FOR ${interestedCompany.toUpperCase()}...` : '// FINDING INTERNSHIPS...';
+            
+            container.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-32 border border-black/10 bg-white">
+                    <div class="relative mb-8 w-16 h-16 flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full border-2 border-black/20 animate-ping opacity-50"></div>
+                        <div class="animate-search relative z-10">
+                            <svg class="w-12 h-12 text-[#111]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                                <path stroke-linecap="square" stroke-linejoin="miter" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-[11px] font-bold tracking-widest uppercase text-gray-500 animate-pulse mt-4">${statusText}</p>
+                </div>`;
+
+            try {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(profileData)
+                });
+                
+                if (response.status === 400) { throw new Error("Zero skills sent to backend."); }
+                const data = await response.json();
+                
+                await new Promise(resolve => setTimeout(resolve, 2500));
+                
+                if ((!data.content_based || data.content_based.length === 0) &&
+                    (!data.hybrid || data.hybrid.length === 0) &&
+                    (!data.dl_based || data.dl_based.length === 0)) {
+                    
+                    container.innerHTML = `
+                        <div class="flex flex-col items-center justify-center py-24 text-center border border-black bg-white">
+                            <p class="text-[11px] tracking-widest font-bold uppercase text-gray-500 mb-3">// 0 MATCHES FOUND</p>
+                            <p class="text-xl font-bold text-[#111] uppercase tracking-tight">Right now there are no such internships available for enrollment.</p>
+                            <p class="text-xs text-gray-500 mt-4 max-w-md leading-relaxed">Try adjusting your location preferences, your CGPA constraint, or expanding your technical skill selection.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const createCard = (rec, index, engineName) => {
+                    const delay = index * 150; 
+                    return `
+                        <div class="group border border-black/20 bg-transparent hover:bg-white transition-colors duration-300 p-6 opacity-0 animate-fade-up flex flex-col" style="animation-delay: ${delay}ms;">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full">
+                                <div class="flex-1 mb-4 md:mb-0">
+                                    <h3 class="text-2xl font-black tracking-tighter uppercase text-[#111] leading-none mb-3">${rec.title}</h3>
+                                    <p class="text-[11px] font-bold tracking-widest uppercase text-gray-500 mb-4 flex gap-4">
+                                        <span>${rec.company}</span>
+                                        <span class="opacity-30">|</span>
+                                        <span>${rec.location}</span>
+                                        <span class="opacity-30">|</span>
+                                        <span>${rec.rating}</span>
+                                    </p>
+                                    <div class="flex items-center gap-3 mt-4 flex-wrap">
+                                        <span class="border border-black text-[#111] text-[9px] font-bold uppercase tracking-widest px-3 py-1">${rec.type}</span>
+                                        <span class="bg-[#111] text-white text-[9px] font-bold uppercase tracking-widest px-3 py-1" title="Minimum Mandatory Duration">MMD: ${rec.duration}</span>
+                                        
+                                        <button type="button" data-company="${rec.company}" onclick="window.runEngine(this.getAttribute('data-company'))" class="border border-black/20 hover:border-black text-[#111] text-[9px] font-bold uppercase tracking-widest px-3 py-1 transition-colors flex items-center gap-2" title="Recalculate feed based on this role">
+                                            Focus Similar ↻
+                                        </button>
+
+                                        <button type="button" data-company="${rec.company}" onclick="window.selectAndLogCompany(this.getAttribute('data-company'), this)" class="bg-[#111] text-white hover:bg-gray-800 text-[9px] font-bold uppercase tracking-widest px-3 py-1 transition-colors flex items-center gap-2">
+                                            Select Company ↗
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-4"><strong class="text-[#111] uppercase tracking-wide text-[10px]">Req:</strong> ${rec.req_skills}</p>
+                                </div>
+                                <div class="flex flex-col items-end border-l border-black/10 pl-6 h-full justify-center">
+                                    <span class="text-4xl font-black tracking-tighter text-[#111]">${rec.score}<span class="text-xl">%</span></span>
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Match Rate</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-black/10 flex justify-between items-center w-full">
+                                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">// IS THIS MATCH ACCURATE?</span>
+                                <div class="flex gap-2">
+                                    <button data-company="${rec.company}" data-title="${rec.title}" data-engine="${engineName}" onclick="window.submitFeedback(this.getAttribute('data-company'), this.getAttribute('data-title'), this.getAttribute('data-engine'), 'Positive', this)" class="border border-black/20 hover:bg-[#111] hover:text-white text-[#111] text-[9px] font-bold uppercase tracking-widest px-5 py-1.5 transition-colors">Yes</button>
+                                    <button data-company="${rec.company}" data-title="${rec.title}" data-engine="${engineName}" onclick="window.submitFeedback(this.getAttribute('data-company'), this.getAttribute('data-title'), this.getAttribute('data-engine'), 'Negative', this)" class="border border-black/20 hover:bg-[#111] hover:text-white text-[#111] text-[9px] font-bold uppercase tracking-widest px-5 py-1.5 transition-colors">No</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                };
+
+                let overallSectionHtml = '';
+                if (data.overall && data.overall.length > 0) {
+                    const best = data.overall[0];
+                    overallSectionHtml = `
+                        <div class="mb-24 opacity-0 animate-fade-up" style="animation-delay: 900ms;">
+                            <div class="flex justify-between items-end border-t border-black/20 pt-16 pb-4 mb-8">
+                                <h3 class="text-xl font-black uppercase tracking-widest text-[#111]">// ENGINE 4: OVERALL CONSENSUS</h3>
+                            </div>
+                            
+                            <div class="bg-[#111] text-white p-12 mb-12 flex flex-col items-center text-center border-4 border-[#111]">
+                                <span class="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-4 border-b border-white/20 pb-2">🏆 Best Recommended Enrollment</span>
+                                <h2 class="text-5xl md:text-6xl font-black uppercase tracking-tighter text-white mb-4">${best.company}</h2>
+                                <p class="text-sm font-bold tracking-widest uppercase text-gray-300">Role: ${best.title} | Consensus Score: ${best.score}%</p>
+                            </div>
+
+                            <div class="relative border border-black/20 bg-white mb-12 p-8 flex flex-col h-[500px]">
+                                <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-6 text-center">// TRI-ENGINE SCORE META-ANALYSIS</h4>
+                                <div class="flex-1 w-full relative">
+                                    <canvas id="overallLineChart_${runId}"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">// ENROLLMENT DETAILS</h4>
+                                ${createCard(best, 0, 'Consensus Meta-Engine')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const buildSection = (title, dataList, delay, overlayId, btnId, graphDivId, canvasId, engineName) => {
+                    if (!dataList || dataList.length === 0) {
+                        return `
+                            <div class="mb-20 opacity-0 animate-fade-up" style="animation-delay: ${delay}ms;">
+                                <div class="flex justify-between items-end border-b border-black/20 pb-4 mb-8">
+                                    <h3 class="text-sm font-bold uppercase tracking-widest">${title}</h3>
+                                </div>
+                                <div class="flex flex-col items-center justify-center py-16 text-center border border-black/10 bg-white">
+                                    <p class="text-[11px] tracking-widest font-bold uppercase text-gray-400 mb-2">// 0% MATCH RATE</p>
+                                    <p class="text-sm font-bold text-[#111] uppercase tracking-wide">Right now there are no such internships available for enrollment.</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    const cards = dataList.map((rec, i) => createCard(rec, i, engineName)).join('');
+                    return `
+                        <div class="mb-20 opacity-0 animate-fade-up" style="animation-delay: ${delay}ms;">
+                            <div class="flex justify-between items-end border-b border-black/20 pb-4 mb-8">
+                                <h3 class="text-sm font-bold uppercase tracking-widest">${title}</h3>
+                            </div>
+                            <div class="relative border border-black/20 bg-white mb-8 flex justify-center h-80 overflow-hidden">
+                                <div id="${overlayId}" class="absolute inset-0 bg-[#F4F3EF]/90 flex flex-col items-center justify-center z-10 transition-opacity duration-300">
+                                    <button id="${btnId}" class="bg-[#111] text-white text-[11px] font-bold uppercase tracking-widest py-3 px-6 hover:bg-black transition-colors flex items-center gap-2">View Graph ↗</button>
+                                </div>
+                                <div id="${graphDivId}" class="w-full max-w-2xl h-full opacity-0 transition-opacity duration-500 p-4">
+                                    <canvas id="${canvasId}"></canvas>
+                                </div>
+                            </div>
+                            <div class="space-y-4">${cards}</div>
+                        </div>
+                    `;
+                };
+
+                let sections = [
+                    { title: '// CONTENT (STRICT MATCH)', data: data.content_based, idPrefix: 'content', canvasId: `contentChart_${runId}`, engineName: 'Content Engine', color: {bg: 'rgba(0, 0, 0, 0.05)', border: '#111111'} },
+                    { title: '// HYBRID (STATISTICAL MATCH)', data: data.hybrid, idPrefix: 'hybrid', canvasId: `hybridChart_${runId}`, engineName: 'Hybrid Engine', color: {bg: 'rgba(0, 0, 0, 0.08)', border: '#111111'} },
+                    { title: '// DEEP LEARNING (PYTORCH MATCH)', data: data.dl_based, idPrefix: 'dl', canvasId: `dlChart_${runId}`, engineName: 'Deep Learning Engine', color: {bg: 'rgba(194, 163, 255, 0.15)', border: '#111111'} }
+                ];
+
+                sections.forEach((sec, i) => sec.delay = i * 300);
+
+                container.innerHTML = sections.map(sec => 
+                    buildSection(sec.title, sec.data, sec.delay, `${sec.idPrefix}Overlay`, `reveal${sec.idPrefix}Btn`, `${sec.idPrefix}GraphDiv`, sec.canvasId, sec.engineName)
+                ).join('') + overallSectionHtml;
+
+                if (data.overall && data.overall.length > 0) {
+                    const ctxLine = document.getElementById(`overallLineChart_${runId}`);
+                    new Chart(ctxLine, {
+                        type: 'line',
+                        data: {
+                            labels: data.overall.map(c => c.company),
+                            datasets: [
+                                { label: 'Strict Match (Content)', data: data.overall.map(c => c.content_raw), borderColor: '#ef4444', backgroundColor: '#ef4444', tension: 0.4, borderWidth: 3, pointRadius: 5 },
+                                { label: 'Statistical (Hybrid)', data: data.overall.map(c => c.hybrid_raw), borderColor: '#22c55e', backgroundColor: '#22c55e', tension: 0.4, borderWidth: 3, pointRadius: 5 },
+                                { label: 'PyTorch (Deep Learning)', data: data.overall.map(c => c.dl_raw), borderColor: '#3b82f6', backgroundColor: '#3b82f6', tension: 0.4, borderWidth: 3, pointRadius: 5 }
+                            ]
+                        },
+                        options: {
+                            animation: { duration: 2500, easing: 'easeOutQuart' },
+                            responsive: true, maintainAspectRatio: false,
+                            scales: {
+                                y: { min: 0, max: 100, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#111', font: { family: 'Inter', size: 10, weight: 'bold' } } },
+                                x: { grid: { display: false }, ticks: { color: '#111', font: { family: 'Inter', size: 10, weight: 'bold' } } }
+                            },
+                            plugins: {
+                                legend: { display: true, position: 'top', labels: { font: { family: 'Inter', size: 11, weight: 'bold' }, color: '#111', usePointStyle: true, padding: 20 } },
+                                tooltip: { backgroundColor: '#111', titleFont: { family: 'Inter', size: 12 }, bodyFont: { family: 'Inter', size: 11 }, padding: 12 }
+                            }
+                        }
+                    });
+                }
+
+                const drawChart = (canvasId, dataset, themeColor) => {
+                    const ctx = document.getElementById(canvasId);
+                    if(!ctx) return;
+                    
+                    let companyNames = dataset.map(rec => rec.company);
+                    let scores = dataset.map(rec => rec.score);
+                    let demandedSkills = dataset.map(rec => rec.req_skills);
+                    
+                    if (companyNames.length === 1) {
+                        companyNames.push('Skill Gap Detected', 'Requirements Not Met');
+                        scores.push(0, 0);
+                        demandedSkills.push('N/A', 'N/A');
+                    } else if (companyNames.length === 2) {
+                        companyNames.push('Skill Gap Detected');
+                        scores.push(0);
+                        demandedSkills.push('N/A');
+                    }
+                    
+                    const gradient = ctx.getContext('2d').createRadialGradient(0, 0, 0, 0, 0, 400);
+                    gradient.addColorStop(0, themeColor.bg);
+                    gradient.addColorStop(1, 'rgba(244, 243, 239, 0)');
+
+                    new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: companyNames,
+                            datasets: [{
+                                label: 'Match Score', data: scores,
+                                backgroundColor: gradient, borderColor: themeColor.border,
+                                borderWidth: 1.5, pointBackgroundColor: '#111',
+                                pointBorderColor: '#fff', pointRadius: 4, pointHoverRadius: 6
+                            }]
+                        },
+                        options: {
+                            animation: { duration: 1500, easing: 'easeOutQuart' },
+                            responsive: true, maintainAspectRatio: false,
+                            scales: { 
+                                r: { 
+                                    min: 0, max: 100, 
+                                    grid: { color: 'rgba(0,0,0,0.1)' },
+                                    angleLines: { color: 'rgba(0,0,0,0.1)' },
+                                    pointLabels: { font: { family: 'Inter', size: 10, weight: 'bold' }, color: '#111' },
+                                    ticks: { display: true, stepSize: 20, color: '#888888', backdropColor: 'transparent', font: { family: 'Inter', size: 9, weight: '600' } }
+                                } 
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { 
+                                    backgroundColor: '#111', titleFont: { family: 'Inter', size: 12 },
+                                    bodyFont: { family: 'Inter', size: 11 }, padding: 12,
+                                    callbacks: { afterLabel: function(context) { return 'Req: ' + demandedSkills[context.dataIndex]; } } 
+                                }
+                            }
+                        }
+                    });
+                };
+
+                const setupReveal = (btnId, overlayId, graphDivId, canvasId, dataset, colors) => {
+                    const btn = document.getElementById(btnId);
+                    if(!btn) return; 
+                    
+                    btn.addEventListener('click', function() {
+                        const overlay = document.getElementById(overlayId);
+                        const graphDiv = document.getElementById(graphDivId);
+                        overlay.classList.add('opacity-0');
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                            graphDiv.classList.remove('opacity-0');
+                            drawChart(canvasId, dataset, colors);
+                        }, 300);
+                    });
+                };
+
+                sections.forEach(sec => {
+                    if (sec.data && sec.data.length > 0) {
+                        setupReveal(`reveal${sec.idPrefix}Btn`, `${sec.idPrefix}Overlay`, `${sec.idPrefix}GraphDiv`, sec.canvasId, sec.data, sec.color);
+                    }
+                });
+
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-16 text-center border border-black bg-white">
+                        <p class="text-[11px] tracking-widest font-bold uppercase text-black mb-2">// ERROR</p>
+                        <p class="text-lg font-bold text-[#111]">Engine execution failed.</p>
+                    </div>
+                `;
+            }
+        };
+
+        document.getElementById('studentProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.runEngine(null); 
+        });
+
+        window.submitFeedback = async function(company, title, engineType, rating, btnElement) {
+            const parentContainer = btnElement.parentElement;
+            parentContainer.innerHTML = `<span class="text-[9px] font-bold text-[#111] uppercase tracking-widest border border-black/20 bg-black/5 px-4 py-1.5">Feedback Logged ✓</span>`;
+            
+            try {
+                await fetch('/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ company: company, title: title, engine_type: engineType, feedback: rating })
+                });
+            } catch (err) {
+                console.error("Failed to submit feedback", err);
+            }
+        };
+
+        const reviews = [
+            { text: "The PyTorch engine matched me perfectly with a Cybersecurity role. Insanely accurate.", author: "Rahul M." },
+            { text: "Saved me hours of scrolling. The TF-IDF match actually looks at my technical skills.", author: "Sarah T." },
+            { text: "Got my dream internship at TCS thanks to the Consensus Meta-Engine!", author: "Priya K." },
+            { text: "The UI is gorgeous and the Hybrid backend is highly optimized. Highly recommend.", author: "Alex J." },
+            {text: "The PyTorch engine matched me perfectly with a Cybersecurity role. Insanely accurate.", author: "Rahul M." },
+                                { text: "Saved me hours of scrolling. The TF-IDF match actually looks at my technical skills.", author: "Sarah T." },
+                                { text: "Got my dream internship at TCS thanks to the Consensus Meta-Engine!", author: "Priya K." },
+                                { text: "The UI is gorgeous and the Hybrid backend is highly optimized. Highly recommend.", author: "Alex J." },
+                                { text: "Finally, a recommendation engine that respects my CGPA and location constraints.", author: "Sneha P." },
+                                { text: "The 3D interactive graphs helped me understand my exact skill gaps. Brilliant tool.", author: "Vikram S." },
+                                { text: "Data Alcott Systems just built the standard for academic-to-industry matching.", author: "Dr. A. Sharma" },
+                                { text: "The entire system feels like it was built by a senior engineering team. Flawless.", author: "Anjali M." },
+                                { text: "This engine is insanely fast. Calculating 3 models in two seconds is magic.", author: "Meera P." },
+                                { text: "The brutalist design with the floating particles is an aesthetic masterpiece.", author: "Siddharth C." },
+                                { text: "Data Alcott Systems just built the standard for academic-to-industry matching.", author: "Kunal S." },
+                                { text: "I'm obsessed with the Spider Graph visualization. It makes skill matching a game.", author: "Sanya M." },
+                                { text: "Saved me hours of scrolling. The TF-IDF match actually looks at my technical skills.", author: "Shruti P." },
+                                { text: "The strict threshold for TF-IDF keeps the feed clean of irrelevant spam jobs.", author: "Pranav N." },
+                                { text: "The Meta-Engine consensus score gave me the confidence to apply for a Cloud role.", author: "Rachita P." },
+                                { text: "The weighting logic between Content and Collaborative filtering is spot on.", author: "Kunal J." },
+                                { text: "A game-changer for CS majors. The gap analysis on the radar chart is so useful.", author: "Dhruv N." },
+                                { text: "It actually read my profile. The TF-IDF didn't just keyword stuff, it understood my stack.", author: "Aarav A." },
+                                { text: "The interactive Dashboard is so smooth. Searching 1,400 companies instantly is crazy.", author: "Sanya R." },
+                                { text: "It correctly filtered out roles that required a 9.0 CGPA since I entered 8.5. Huge time saver.", author: "Kavya P." },
+                                { text: "The empty state errors and loading pulses are such a nice UX consideration.", author: "Ishita S." },
+                                { text: "The radar graphs helped me understand my exact skill gaps. Brilliant tool.", author: "Rishabh S." },
+                                { text: "The collaborative engine showing what my peers are interacting with is a brilliant feature.", author: "Samir N." },
+                                { text: "The 'Focus Similar' button completely changed how I look for machine learning internships.", author: "Rohan C." },
+                                { text: "I entered Python and Computer Vision, and the PyTorch model gave me exact matches.", author: "Kunal S." },
+                                { text: "The UI transitions are buttery smooth. Data Alcott Systems knocked it out of the park.", author: "Shruti V." },
+                                { text: "I used the 'Focus Similar' tool to pivot from web dev to UI/UX roles instantly.", author: "Janhvi H." },
+                                { text: "Perfectly balanced Hybrid engine. It doesn't just recommend the big tech companies blindly.", author: "Sahil P." },
+                                { text: "Honestly, the speed of the Flask API serving PyTorch inferences is impressive.", author: "Aditya M." },
+                                { text: "The fact that I can opt-in to timeline logging makes me trust the data privacy.", author: "Karan A." },
+                                { text: "This tool is a lifesaver. Found an amazing DevOps internship in under two minutes.", author: "Shruti G." },
+                                { text: "The math behind the Bayesian popularity baseline actually makes sense. Great results.", author: "Kabir J." },
+                                { text: "Data Alcott's meta-analysis line chart is the coolest data viz I've seen on a job site.", author: "Ananya B." },
+                                { text: "I didn't think an AI could accurately parse my niche AWS and Docker skills. I was wrong.", author: "Vikram R." },
+                                { text: "The live feedback notifications make the whole platform feel alive and trusted.", author: "Pooja B." },
+                                { text: "I love how it greys out duplicate skills. The attention to UI detail is unmatched.", author: "Aditya N." },
+                                { text: "This beats every basic job board. The collaborative filtering is top-tier.", author: "Vikram V." },
+                                { text: "The real-time search debouncing on the database table is such a pro-level touch.", author: "Riya K." },
+                                { text: "I was skeptical about the Deep Learning aspect, but it found a Data Science role I missed.", author: "Rishabh T." },
+                                { text: "As a forensics student, finding niche Digital Forensics roles was impossible until now.", author: "Rachita P." },
+                                { text: "It took my B.Tech degree and perfectly aligned it with entry-level Cloud Engineering roles.", author: "Dev G." },
+                                { text: "I finally understand what skills I'm missing for top-tier Machine Learning internships.", author: "Priya P." },
+                                { text: "Got my dream internship at TCS thanks to the Consensus Meta-Engine!", author: "Dev J." },
+                                { text: "The 3D embedding map concepts driving this engine are clearly highly advanced.", author: "Aditya P." },
+                                { text: "No fluff, just pure algorithmic matching. The AI engine is the real deal.", author: "Dev P." },
+                                { text: "I found an awesome digital forensics lab internship thanks to the deep learning model.", author: "Tanvi J." },
+                                { text: "The location override worked flawlessly to find me a React dev role in Bangalore.", author: "Ananya K." },
+                                { text: "Never seen a student project this polished. Production-ready out of the box.", author: "Siddharth P." },
+                                { text: "This is exactly what the internship hunt needed. Pure data-driven recommendations.", author: "Rachita V." },
+                                { text: "It recommended a startup in Pune that perfectly matches my NLP background.", author: "Diya J." },
+                                { text: "I actually enjoyed filling out the profile form. The dynamic dropdowns are great.", author: "Kiara R." },
+                                { text: "The fact that it calculates cosine similarity in real-time is mind-blowing.", author: "Siddharth V." },
+                                { text: "The engine accurately identified my lack of SQL and suggested roles that didn't require it.", author: "Shruti A." },
+                                { text: "The UI is gorgeous and the Hybrid backend is highly optimized. Highly recommend.", author: "Anjali K." },
+                                { text: "The way it handles partial skill matches is incredibly smart. Love the visualizations.", author: "Vikram A." },
+                                { text: "The entire system feels like it was built by a senior engineering team. Flawless.", author: "Sanya N." },
+                                { text: "Finally, a recommendation engine that respects my CGPA and location constraints.", author: "Rishabh J." },
+                                { text: "This engine is insanely fast. Calculating 3 models in two seconds is magic.", author: "Ananya V." },
+                                { text: "The 'Focus Similar' button completely changed how I look for machine learning internships.", author: "Rachita G." },
+                                { text: "The PyTorch engine matched me perfectly with a Cybersecurity role. Insanely accurate.", author: "Anjali B." },
+                                { text: "The strict threshold for TF-IDF keeps the feed clean of irrelevant spam jobs.", author: "Meera A." },
+                                { text: "I found an awesome digital forensics lab internship thanks to the deep learning model.", author: "Ishita S." },
+                                { text: "A game-changer for CS majors. The gap analysis on the radar chart is so useful.", author: "Sanya K." },
+                                { text: "I entered Python and Computer Vision, and the PyTorch model gave me exact matches.", author: "Aarav C." },
+                                { text: "I used the 'Focus Similar' tool to pivot from web dev to UI/UX roles instantly.", author: "Arjun V." },
+                                { text: "The empty state errors and loading pulses are such a nice UX consideration.", author: "Sneha V." },
+                                { text: "Data Alcott Systems just built the standard for academic-to-industry matching.", author: "Nisha G." },
+                                { text: "It correctly filtered out roles that required a 9.0 CGPA since I entered 8.5. Huge time saver.", author: "Pranav N." },
+                                { text: "The Meta-Engine consensus score gave me the confidence to apply for a Cloud role.", author: "Kavya R." },
+                                { text: "The collaborative engine showing what my peers are interacting with is a brilliant feature.", author: "Vikram V." },
+                                { text: "I finally understand what skills I'm missing for top-tier Machine Learning internships.", author: "Maya H." },
+                                { text: "The PyTorch engine matched me perfectly with a Cybersecurity role. Insanely accurate.", author: "Armaan R." },
+                                { text: "I actually enjoyed filling out the profile form. The dynamic dropdowns are great.", author: "Neha S." },
+                                { text: "Perfectly balanced Hybrid engine. It doesn't just recommend the big tech companies blindly.", author: "Nisha P." },
+                                { text: "The UI is gorgeous and the Hybrid backend is highly optimized. Highly recommend.", author: "Riya H." },
+                                { text: "The strict threshold for TF-IDF keeps the feed clean of irrelevant spam jobs.", author: "Shruti S." },
+                                { text: "I used the 'Focus Similar' tool to pivot from web dev to UI/UX roles instantly.", author: "Tanvi G." },
+                                { text: "Finally, a recommendation engine that respects my CGPA and location constraints.", author: "Kunal A." },
+                                { text: "The way it handles partial skill matches is incredibly smart. Love the visualizations.", author: "Siddharth B." },
+                                { text: "The 3D embedding map concepts driving this engine are clearly highly advanced.", author: "Rachita K." },
+                                { text: "The 'Focus Similar' button completely changed how I look for machine learning internships.", author: "Maya G." },
+                                { text: "The engine accurately identified my lack of SQL and suggested roles that didn't require it.", author: "Sanya P." },
+                                { text: "The fact that it calculates cosine similarity in real-time is mind-blowing.", author: "Aman C." },
+                                { text: "Never seen a student project this polished. Production-ready out of the box.", author: "Kiara B." },
+                                { text: "The brutalist design with the floating particles is an aesthetic masterpiece.", author: "Tara D." },
+                                { text: "It recommended a startup in Pune that perfectly matches my NLP background.", author: "Dhruv S." },
+                                { text: "Honestly, the speed of the Flask API serving PyTorch inferences is impressive.", author: "Karan S." },
+                                { text: "The interactive Dashboard is so smooth. Searching 1,400 companies instantly is crazy.", author: "Neha N." },
+                                { text: "This is exactly what the internship hunt needed. Pure data-driven recommendations.", author: "Karan N." },
+                                { text: "It actually read my profile. The TF-IDF didn't just keyword stuff, it understood my stack.", author: "Aarav S." },
+                                { text: "The weighting logic between Content and Collaborative filtering is spot on.", author: "Priya P." },
+                                { text: "I love how it greys out duplicate skills. The attention to UI detail is unmatched.", author: "Rohan G." },
+                                { text: "The Meta-Engine consensus score gave me the confidence to apply for a Cloud role.", author: "Aditya V." },
+                                { text: "Got my dream internship at TCS thanks to the Consensus Meta-Engine!", author: "Meera B." },
+                                { text: "I didn't think an AI could accurately parse my niche AWS and Docker skills. I was wrong.", author: "Pooja V." },
+                                { text: "The way it handles partial skill matches is incredibly smart. Love the visualizations.", author: "Sahil N." },
+                                { text: "The location override worked flawlessly to find me a React dev role in Bangalore.", author: "Riya A." },
+                                { text: "As a forensics student, finding niche Digital Forensics roles was impossible until now.", author: "Yash P." },
+                                { text: "Data Alcott Systems just built the standard for academic-to-industry matching.", author: "Kabir B." },
+                                { text: "This tool is a lifesaver. Found an amazing DevOps internship in under two minutes.", author: "Samir J." },
+                                { text: "The math behind the Bayesian popularity baseline actually makes sense. Great results.", author: "Ananya G." },
+                                { text: "I used the 'Focus Similar' tool to pivot from web dev to UI/UX roles instantly.", author: "Priya B." },
+                                { text: "I found an awesome digital forensics lab internship thanks to the deep learning model.", author: "Kabir M." },
+                                { text: "The fact that I can opt-in to timeline logging makes me trust the data privacy.", author: "Ishita A." },
+                                { text: "Saved me hours of scrolling. The TF-IDF match actually looks at my technical skills.", author: "Riya P." },
+                                { text: "The live feedback notifications make the whole platform feel alive and trusted.", author: "Kunal D." },
+                                { text: "The way it handles partial skill matches is incredibly smart. Love the visualizations.", author: "Sanya K." }
+        ];
+
+        const popup = document.getElementById('reviewPopup');
+        const reviewText = document.getElementById('reviewText');
+        const reviewAuthor = document.getElementById('reviewAuthor');
+
+        function triggerRandomReview() {
+            const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
+            reviewText.textContent = `"${randomReview.text}"`;
+            reviewAuthor.textContent = `- ${randomReview.author}`;
+
+            popup.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+            popup.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                popup.classList.remove('translate-y-0', 'opacity-100');
+                popup.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+            }, 6000);
+        }
+
+        setTimeout(() => {
+            triggerRandomReview();
+            setInterval(triggerRandomReview, 25000);
+        }, 4000);
+        
+
+                   // Add to existing navEngine listener to hide insight
+                   navEngine.addEventListener('click', () => { insightSection.classList.add('hidden'); navInsight.classList.remove('text-black', 'border-b', 'border-black'); navInsight.classList.add('text-gray-500'); });
+                   navDocs.addEventListener('click', () => { insightSection.classList.add('hidden'); navInsight.classList.remove('text-black', 'border-b', 'border-black'); navInsight.classList.add('text-gray-500'); });
+                   navDashboard.addEventListener('click', () => { insightSection.classList.add('hidden'); navInsight.classList.remove('text-black', 'border-b', 'border-black'); navInsight.classList.add('text-gray-500'); });
+
+                   // REAL-TIME SERVER-SIDE SEARCH
+                                               let searchTimeout = null;
+                                               document.getElementById('insightSearch').addEventListener('keyup', function() {
+                                                         clearTimeout(searchTimeout);
+                                                         const query = this.value;
+            
+                                                         // Wait 300ms after user stops typing to ask Python for the data
+                                                         searchTimeout = setTimeout(() => {
+                                                                   loadTelemetryData(query);
+                                                         }, 300); 
+                                               });
+
+                                               // 🚨 Fetch Data dynamically based on search query
+                                               async function loadTelemetryData(searchQuery = '') {
+                                                         try {
+                                                                  // Send the query to Python
+                                                                  const url = searchQuery ? `/api/insights?search=${encodeURIComponent(searchQuery)}` : '/api/insights';
+                                                                  const res = await fetch(url);
+                                                                  const data = await res.json();
+                
+                                                                  const feedContainer = document.getElementById('insightFeedContainer');
+                feedContainer.innerHTML = '';
+                
+                                                                  if (data.error) {
+                                                                          feedContainer.innerHTML = `<li class="p-6 text-sm text-red-500 font-bold">Backend Crash: ${data.error}</li>`;
+                                                                          return;
+                                                                   }
+                
+                                                                   if (data.feed.length === 0) {
+                                                                           feedContainer.innerHTML = '<li class="p-6 text-sm text-gray-500 text-center font-bold">No results found for that name.</li>';
+                                                                           return;
+                                                                    }
+                
+                                                                    // Render the 10 matched items
+                                                                    data.feed.forEach((item, index) => {
+                                                                              const li = document.createElement('li');
+                                                                              li.className = `p-5 bg-white border border-black/10 hover:border-black cursor-pointer transition-all duration-300 group opacity-0 animate-fade-up`;
+                                                                              li.style.animationDelay = `${index * 50}ms`;
+                                                                              li.innerHTML = `
+                                                                                       <div class="flex justify-between items-start mb-2">
+                                                                                                <span class="text-xs font-bold text-[#111] uppercase tracking-wider">${item.Student_ID}</span>
+                                                                                                 <span class="text-[9px] font-bold text-gray-400 tracking-widest">${item.Timestamp}</span>
+                                                                                        </div>
+                                                                                        <div class="text-sm font-bold text-gray-800 mb-1">${item.Student_Name}</div>
+                                                                                        <div class="text-[10px] uppercase tracking-widest text-gray-500 group-hover:text-black">
+                                                                                                  Targeted: <span class="bg-black/5 px-2 py-0.5 group-hover:bg-[#111] group-hover:text-white transition-colors">${item.Company_Selected}</span>
+                                                                                        </div>
+                                                                               `;
+                                                                              li.onclick = () => renderInsightDetail(item, data.graph);
+                                                                              feedContainer.appendChild(li);
+                                                                    });
+                
+                                                                    // Keep the global graph updated
+                                                                    if(!searchQuery) renderTelemetryChart(data.graph, 'Aggregate Searches');
+                
+                                                         } catch(err) {
+                                                                 console.error("Telemetry Error:", err);
+                                                                 document.getElementById('insightFeedContainer').innerHTML = `<li class="p-6 text-sm text-red-500 font-bold">Frontend Crash: ${err.message}</li>`;
+                                                         }
+                                               }
+
+                   function renderInsightDetail(item, graphData) {
+                             const detailCard = document.getElementById('insightDetailCard');
+                             detailCard.classList.remove('opacity-0');
+            
+                             document.getElementById('detailCompany').innerText = item.Company_Selected;
+                             document.getElementById('detailName').innerText = item.Student_Name;
+                             document.getElementById('detailId').innerText = item.Student_ID;
+                             document.getElementById('detailReg').innerText = item.Registration_No;
+                             document.getElementById('detailTime').innerText = item.Timestamp;
+            
+                             document.getElementById('graphScope').innerText = `Focus: ${item.Company_Selected}`;
+                             renderTelemetryChart(graphData, item.Company_Selected);
+                   }
+        
+                  function renderTelemetryChart(graphData, highlightCompany = null) {
+                            const ctx = document.getElementById('insightAnalyticsChart');
+                            if(telemetryChartInstance) telemetryChartInstance.destroy();
+            
+                            const labels = Object.keys(graphData);
+                            const values = Object.values(graphData);
+            
+                            // Highlight logic: Make selected company black, rest gray
+                           const bgColors = labels.map(l => l === highlightCompany ? '#111111' : 'rgba(0,0,0,0.1)');
+                           const borderColors = labels.map(l => l === highlightCompany ? '#111111' : 'rgba(0,0,0,0.2)');
+
+                           telemetryChartInstance = new Chart(ctx, {
+                                     type: 'bar',
+                                     data: {
+                                              labels: labels,
+                                              datasets: [{
+                                                        label: 'Total Enrollments/Searches',
+                                                        data: values,
+                                                        backgroundColor: bgColors,
+                                                        borderColor: borderColors,
+                                                        borderWidth: 1,
+                                                        borderRadius: 2
+                                              }]
+                                     },
+                                     options: {
+                                               responsive: true,
+                                               maintainAspectRatio: false,
+                                               animation: { duration: 1000, easing: 'easeOutQuart' },
+                                               plugins: {
+                                                         legend: { display: false },
+                                                         tooltip: { backgroundColor: '#111', titleFont: { family: 'Inter', size: 12 }, bodyFont: { family: 'Inter', size: 11 }, padding: 12 }
+                                               },
+                                               scales: {
+                                                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { stepSize: 1, font: { family: 'Inter', size: 10, weight: 'bold' } } },
+                                                         x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 9, weight: 'bold' } } }
+                                               }
+                                     }
+                           });
+                  }
+        if(document.getElementById('particles-js')) {
+            particlesJS("particles-js", {
+              "particles": {
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#c2a3ff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#000000", "opacity": 0.1, "width": 1 },
+                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "out_mode": "out" }
+              },
+              "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } } }
+              },
+              "retina_detect": true
+            });
+        }
+        // Toggle & Auto-Generate Academic Credentials based on Consent
+        document.getElementById('userConsent').addEventListener('change', function() {
+            const credentialsSection = document.getElementById('academicCredentials');
+            const studentIdInput = document.getElementById('studentId');
+            const regNumberInput = document.getElementById('regNumber');
+
+            if (this.checked) {
+                credentialsSection.classList.remove('hidden');
+                const randomStudentNum = Math.floor(100000 + Math.random() * 900000);
+                const randomRegNum = Math.floor(100000 + Math.random() * 900000);
+
+                studentIdInput.value = randomStudentNum;
+                regNumberInput.value = 'RE' + randomRegNum;
+
+                studentIdInput.setAttribute('readonly', true);
+                regNumberInput.setAttribute('readonly', true);
+
+                studentIdInput.classList.add('bg-black/5', 'cursor-not-allowed', 'text-gray-600', 'font-bold');
+                regNumberInput.classList.add('bg-black/5', 'cursor-not-allowed', 'text-gray-600', 'font-bold');
+            } else {
+                credentialsSection.classList.add('hidden');
+                studentIdInput.value = '';
+                regNumberInput.value = '';
+
+                studentIdInput.removeAttribute('readonly');
+                regNumberInput.removeAttribute('readonly');
+
+                studentIdInput.classList.remove('bg-black/5', 'cursor-not-allowed', 'text-gray-600', 'font-bold');
+                regNumberInput.classList.remove('bg-black/5', 'cursor-not-allowed', 'text-gray-600', 'font-bold');
+            }
+        });
+    </script>
+</body>
+</html>
