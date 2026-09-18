@@ -13,7 +13,9 @@ import time
 import datetime 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, template_folder='.')
-
+@app.get("/ping")
+def ping():
+    return "ok"
 # --- DATA ENTRY Consent---
 def log_to_timeline(student_id, reg_no, student_name, company, interaction_type, score):
     file_path = 'user_interactions_timeline.csv'
