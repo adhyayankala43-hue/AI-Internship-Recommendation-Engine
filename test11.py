@@ -11,6 +11,7 @@ import os
 import csv         
 import time
 import datetime 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, template_folder='.')
 
 # --- DATA ENTRY Consent---
@@ -68,10 +69,10 @@ class RecommendationNet(nn.Module):
 
 print("Loading Tri-Engine databases and Deep Learning weights...")
 try:
-    df_internships = pd.read_csv(r"D:\recomm\internship_database_2.csv", encoding='latin-1')
-    df_ratings = pd.read_csv(r"D:\recomm\company_ratings.csv", encoding='latin-1')
-    df_interactions = pd.read_csv(r"D:\recomm\user_interactions_timeline.csv")
-    df_timeline = pd.read_csv("user_interactions_timeline.csv", on_bad_lines='skip')
+    df_internships = pd.read_csv(os.path.join(BASE_DIR, "internship_database_2.csv"), encoding='latin-1')
+    df_ratings = pd.read_csv(os.path.join(BASE_DIR, "company_ratings.csv"), encoding='latin-1')
+    df_interactions = pd.read_csv(os.path.join(BASE_DIR, "user_interactions_timeline.csv"), on_bad_lines='skip')
+    df_timeline = df_interactions
     df_internships.columns = df_internships.columns.str.strip()
     df_ratings.columns = df_ratings.columns.str.strip()
     df_interactions.columns = df_interactions.columns.str.strip()
@@ -96,11 +97,11 @@ try:
     df_merged = pd.merge(df_merged, peer_scores, on="Company_Name", how="left")
     df_merged['Collab_Score'] = df_merged['Collab_Score'].fillna(0) 
 
-    company_classes = np.load(r"D:\recomm\company_classes.npy", allow_pickle=True)
+    company_classes = np.load(os.path.join(BASE_DIR, "company_classes.npy"), allow_pickle=True)
     num_companies = len(company_classes)
     
     dl_model = RecommendationNet(num_companies)
-    dl_model.load_state_dict(torch.load(r"D:\recomm\dl_model.pth", weights_only=True))
+    dl_model.load_state_dict(torch.load(os.path.join(BASE_DIR, "dl_model.pth"), weights_only=True, map_location=torch.device('cpu')))
     dl_model.eval() 
 
     with torch.no_grad():
@@ -251,7 +252,7 @@ def feedback():
         feedback_val = data.get('feedback', 'Unknown')
         engine_type = data.get('engine_type', 'Unknown')
         
-        file_path = r"D:\recomm\feedback_logs.csv"
+        file_path = os.path.join(BASE_DIR, "feedback_logs.csv")
         file_exists = os.path.isfile(file_path)
         
         with open(file_path, mode='a', newline='', encoding='utf-8') as f:
@@ -274,7 +275,7 @@ def get_insights():
         # 1. Catch the search query from the frontend
         search_query = request.args.get('search', '').lower().strip()
         
-        file_path = r"D:\recomm\user_interactions_timeline.csv"
+        file_path = os.path.join(BASE_DIR, "user_interactions_timeline.csv")
         if not os.path.exists(file_path):
             file_path = 'user_interactions_timeline.csv'
             
