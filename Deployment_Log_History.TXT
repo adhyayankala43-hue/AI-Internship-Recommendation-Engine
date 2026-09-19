@@ -1,0 +1,104 @@
+Render Deployment Log History
+
+2026-09-18T10:41:08.285558925Z Downloading joblib-1.6.0-py3-none-any.whl (306 kB)
+2026-09-18T10:41:08.296683355Z Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+2026-09-18T10:41:08.306009344Z Downloading https://download.pytorch.org/whl/markupsafe-3.0.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (23 kB)
+2026-09-18T10:41:08.315928785Z Downloading narwhals-2.26.0-py3-none-any.whl (474 kB)
+2026-09-18T10:41:08.328513153Z Downloading networkx-3.6.1-py3-none-any.whl (2.1 MB)
+2026-09-18T10:41:08.33996572Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 188.9 MB/s  0:00:00
+2026-09-18T10:41:08.348723036Z Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-09-18T10:41:08.359566559Z Downloading scipy-1.18.1-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+2026-09-18T10:41:08.539793926Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 196.6 MB/s  0:00:00
+2026-09-18T10:41:08.549146667Z Downloading setuptools-84.0.0-py3-none-any.whl (818 kB)
+2026-09-18T10:41:08.555918095Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 818.2/818.2 kB 112.5 MB/s  0:00:00
+2026-09-18T10:41:08.56506514Z Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-09-18T10:41:08.575252841Z Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+2026-09-18T10:41:08.605613027Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 211.1 MB/s  0:00:00
+2026-09-18T10:41:08.614663087Z Downloading mpmath-1.3.0-py3-none-any.whl (536 kB)
+2026-09-18T10:41:08.618665689Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 536.2/536.2 kB 112.3 MB/s  0:00:00
+2026-09-18T10:41:08.627891719Z Downloading threadpoolctl-3.7.0-py3-none-any.whl (26 kB)
+2026-09-18T10:41:08.63823523Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-09-18T10:41:08.648613336Z Downloading werkzeug-3.1.8-py3-none-any.whl (226 kB)
+2026-09-18T10:41:08.65931301Z Downloading filelock-4.0.0-py3-none-any.whl (106 kB)
+2026-09-18T10:41:08.66964327Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-09-18T10:41:09.132574614Z Installing collected packages: mpmath, typing-extensions, threadpoolctl, sympy, six, setuptools, packaging, numpy, networkx, narwhals, MarkupSafe, itsdangerous, fsspec, filelock, cloudpickle, click, blinker, Werkzeug, scipy, python-dateutil, joblib, Jinja2, gunicorn, torch, scikit-learn, pandas, Flask
+2026-09-18T10:41:39.143420688Z 
+2026-09-18T10:41:39.145859884Z Successfully installed Flask-3.0.0 Jinja2-3.1.6 MarkupSafe-3.0.3 Werkzeug-3.1.8 blinker-1.9.0 click-8.5.0 cloudpickle-3.1.2 filelock-4.0.0 fsspec-2026.7.0 gunicorn-21.2.0 itsdangerous-2.2.0 joblib-1.6.0 mpmath-1.3.0 narwhals-2.26.0 networkx-3.6.1 numpy-2.5.3 packaging-26.3 pandas-3.0.6 python-dateutil-2.9.0.post0 scikit-learn-1.9.1 scipy-1.18.1 setuptools-84.0.0 six-1.17.0 sympy-1.14.0 threadpoolctl-3.7.0 torch-2.14.0+cpu typing-extensions-4.16.0
+2026-09-18T10:41:39.277757731Z 
+2026-09-18T10:41:39.27778486Z [notice] A new release of pip is available: 25.3 -> 26.2.1
+2026-09-18T10:41:39.277787862Z [notice] To update, run: pip install --upgrade pip
+2026-09-18T10:41:40.384516641Z ==> Uploading build...
+2026-09-18T10:41:53.763659619Z ==> Uploaded in 9.6s. Compression took 3.7s
+2026-09-18T10:41:53.775314346Z ==> Build successful 🎉
+2026-09-18T10:41:54.804884208Z ==> Deploying...
+2026-09-18T10:41:54.929016318Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-09-18T10:42:27.199011461Z ==> Running 'gunicorn test11:app'
+2026-09-18T10:42:58.826822323Z ==> No open ports detected, continuing to scan...
+2026-09-18T10:42:58.937813916Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2026-09-18T10:43:10.799118458Z [2026-09-18 10:43:10 +0000] [59] [INFO] Starting gunicorn 21.2.0
+2026-09-18T10:43:10.799617497Z [2026-09-18 10:43:10 +0000] [59] [INFO] Listening at: http://0.0.0.0:10000 (59)
+2026-09-18T10:43:10.799625647Z [2026-09-18 10:43:10 +0000] [59] [INFO] Using worker: sync
+2026-09-18T10:43:10.905348663Z [2026-09-18 10:43:10 +0000] [77] [INFO] Booting worker with pid: 77
+2026-09-18T10:43:11.796675613Z Loading Tri-Engine databases and Deep Learning weights...
+2026-09-18T10:43:11.796708744Z ✅ Databases and PyTorch Model loaded successfully!
+2026-09-18T10:43:11.796714384Z 127.0.0.1 - - [18/Sep/2026:10:43:11 +0000] "HEAD / HTTP/1.1" 200 0 "-" "Go-http-client/1.1"
+2026-09-18T10:43:15.823486153Z ==> Your service is live 🎉
+2026-09-18T10:43:15.946664869Z 127.0.0.1 - - [18/Sep/2026:10:43:15 +0000] "GET / HTTP/1.1" 200 102488 "-" "Go-http-client/2.0"
+2026-09-18T10:43:15.962941276Z ==> 
+2026-09-18T10:43:15.965046401Z ==> ///////////////////////////////////////////////////////////
+2026-09-18T10:43:15.967623514Z ==> 
+2026-09-18T10:43:15.972596149Z ==> Available at your primary URL https://ai-internship-recommendation-engine-a23s.onrender.com
+2026-09-18T10:43:15.974783859Z ==> 
+2026-09-18T10:43:15.977707643Z ==> ///////////////////////////////////////////////////////////
+2026-09-18T10:45:26.405641413Z Using cached scikit_learn-1.9.1-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (9.2 MB)
+2026-09-18T10:45:26.409711502Z Using cached blinker-1.9.0-py3-none-any.whl (8.5 kB)
+2026-09-18T10:45:26.410659242Z Using cached click-8.5.0-py3-none-any.whl (125 kB)
+2026-09-18T10:45:26.411634061Z Using cached fsspec-2026.7.0-py3-none-any.whl (206 kB)
+2026-09-18T10:45:26.412643761Z Using cached itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+2026-09-18T10:45:26.420933593Z Using cached https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-09-18T10:45:26.421926561Z Using cached joblib-1.6.0-py3-none-any.whl (306 kB)
+2026-09-18T10:45:26.423055353Z Using cached cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+2026-09-18T10:45:26.431513967Z Using cached https://download.pytorch.org/whl/markupsafe-3.0.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (23 kB)
+2026-09-18T10:45:26.432478813Z Using cached narwhals-2.26.0-py3-none-any.whl (474 kB)
+2026-09-18T10:45:26.433654678Z Using cached networkx-3.6.1-py3-none-any.whl (2.1 MB)
+2026-09-18T10:45:26.435284202Z Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-09-18T10:45:26.436323456Z Using cached scipy-1.18.1-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+2026-09-18T10:45:26.448813315Z Using cached setuptools-84.0.0-py3-none-any.whl (818 kB)
+2026-09-18T10:45:26.450053019Z Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-09-18T10:45:26.450943328Z Using cached sympy-1.14.0-py3-none-any.whl (6.3 MB)
+2026-09-18T10:45:26.45406851Z Using cached mpmath-1.3.0-py3-none-any.whl (536 kB)
+2026-09-18T10:45:26.455178543Z Using cached threadpoolctl-3.7.0-py3-none-any.whl (26 kB)
+2026-09-18T10:45:26.456092568Z Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+2026-09-18T10:45:26.457024475Z Using cached werkzeug-3.1.8-py3-none-any.whl (226 kB)
+2026-09-18T10:45:26.458001709Z Using cached filelock-4.0.0-py3-none-any.whl (106 kB)
+2026-09-18T10:45:26.458941804Z Using cached packaging-26.3-py3-none-any.whl (129 kB)
+2026-09-18T10:45:26.929200682Z Installing collected packages: mpmath, typing-extensions, threadpoolctl, sympy, six, setuptools, packaging, numpy, networkx, narwhals, MarkupSafe, itsdangerous, fsspec, filelock, cloudpickle, click, blinker, Werkzeug, scipy, python-dateutil, joblib, Jinja2, gunicorn, torch, scikit-learn, pandas, Flask
+2026-09-18T10:45:57.266280391Z 
+2026-09-18T10:45:57.268696338Z Successfully installed Flask-3.0.0 Jinja2-3.1.6 MarkupSafe-3.0.3 Werkzeug-3.1.8 blinker-1.9.0 click-8.5.0 cloudpickle-3.1.2 filelock-4.0.0 fsspec-2026.7.0 gunicorn-21.2.0 itsdangerous-2.2.0 joblib-1.6.0 mpmath-1.3.0 narwhals-2.26.0 networkx-3.6.1 numpy-2.5.3 packaging-26.3 pandas-3.0.6 python-dateutil-2.9.0.post0 scikit-learn-1.9.1 scipy-1.18.1 setuptools-84.0.0 six-1.17.0 sympy-1.14.0 threadpoolctl-3.7.0 torch-2.14.0+cpu typing-extensions-4.16.0
+2026-09-18T10:45:57.272153631Z 
+2026-09-18T10:45:57.272157575Z [notice] A new release of pip is available: 25.3 -> 26.2.1
+2026-09-18T10:45:57.27215911Z [notice] To update, run: pip install --upgrade pip
+2026-09-18T10:45:58.457587024Z ==> Uploading build...
+2026-09-18T10:46:11.731367543Z ==> Uploaded in 9.2s. Compression took 4.0s
+2026-09-18T10:46:11.73961463Z ==> Build successful 🎉
+2026-09-18T10:46:12.829062535Z ==> Deploying...
+2026-09-18T10:46:12.932211414Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-09-18T10:46:43.06158209Z ==> Running 'gunicorn test11:app'
+2026-09-18T10:47:17.373662469Z ==> No open ports detected, continuing to scan...
+2026-09-18T10:47:17.512253643Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2026-09-18T10:47:23.319833583Z [2026-09-18 10:47:23 +0000] [58] [INFO] Starting gunicorn 21.2.0
+2026-09-18T10:47:23.320601032Z [2026-09-18 10:47:23 +0000] [58] [INFO] Listening at: http://0.0.0.0:10000 (58)
+2026-09-18T10:47:23.320669066Z [2026-09-18 10:47:23 +0000] [58] [INFO] Using worker: sync
+2026-09-18T10:47:23.52047843Z [2026-09-18 10:47:23 +0000] [77] [INFO] Booting worker with pid: 77
+2026-09-18T10:47:24.228736277Z Loading Tri-Engine databases and Deep Learning weights...
+2026-09-18T10:47:24.228757798Z ✅ Databases and PyTorch Model loaded successfully!
+2026-09-18T10:47:24.228763359Z 127.0.0.1 - - [18/Sep/2026:10:47:24 +0000] "HEAD / HTTP/1.1" 200 0 "-" "Go-http-client/1.1"
+2026-09-18T10:47:34.073797751Z ==> Your service is live 🎉
+2026-09-18T10:47:34.260943145Z ==> 
+2026-09-18T10:47:34.267169325Z ==> ///////////////////////////////////////////////////////////
+2026-09-18T10:47:34.277938852Z ==> 
+2026-09-18T10:47:34.282129602Z ==> Available at your primary URL https://ai-internship-recommendation-engine-a23s.onrender.com
+2026-09-18T10:47:34.286335063Z ==> 
+2026-09-18T10:47:34.290215745Z ==> ///////////////////////////////////////////////////////////
+
+
